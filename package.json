@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
+  "type": "module",
+  "jest": {
+    "transform": {}
+  },
   "scripts": {
     "start": "node main.js",
-    "test": "jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "repository": {
     "type": "git",
