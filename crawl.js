@@ -1,5 +1,6 @@
 import { JSDOM } from "jsdom";
 
+const listOfEmails = [];
 async function crawlPage(baseURL, currentURL, pages) {
   const baseURLObj = new URL(baseURL);
   const currentURLObj = new URL(currentURL);
@@ -16,6 +17,8 @@ async function crawlPage(baseURL, currentURL, pages) {
   pages[normalizedCurrentURL] = 1;
 
   console.log(`Actively crawling ${currentURL}`);
+
+  // const listOfEmails = [];
 
   try {
     const res = await fetch(currentURL);
@@ -36,6 +39,12 @@ async function crawlPage(baseURL, currentURL, pages) {
 
     const htmlBody = await res.text();
 
+    const emailsOnPage = getEmailsFromHTML(htmlBody);
+
+    if (emailsOnPage !== null) {
+      listOfEmails.push(emailsOnPage);
+    }
+
     const nextURLs = getURLSfromHTML(htmlBody, baseURL);
 
     for (const nextURL of nextURLs) {
@@ -44,7 +53,16 @@ async function crawlPage(baseURL, currentURL, pages) {
   } catch (err) {
     console.log(`error in fetch: ${err.message}, on page: ${currentURL}`);
   }
+  // return pages;
   return pages;
+}
+
+function getEmailsFromHTML(htmlBody) {
+  const contentToSearch = htmlBody.toString();
+  const emailsOnPage = contentToSearch.match(
+    /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi
+  );
+  return emailsOnPage;
 }
 
 function getURLSfromHTML(htmlBody, baseURL) {
@@ -83,4 +101,4 @@ function normalizeURL(urlString) {
   }
 }
 
-export { normalizeURL, getURLSfromHTML, crawlPage };
+export { normalizeURL, getURLSfromHTML, crawlPage, listOfEmails };
