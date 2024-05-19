@@ -1,4 +1,5 @@
-import { crawlPage, listOfEmails } from "./crawl.js";
+import { crawlPage } from "./crawl.js";
+import { printReport } from "./report.js";
 
 async function main() {
   if (process.argv.length < 3) {
@@ -12,16 +13,16 @@ async function main() {
   const baseURL = process.argv[2];
   console.log(`Started crawl of ${baseURL}`);
 
+  // IF I WANT TO GET ALL THE URLS CRAWLED
   //   const pages = await crawlPage(baseURL, baseURL, {});
-
   //   const emails = [];
   //   for (const page of Object.keys(pages)) {
   //     console.log(page);
   //   }
 
   await crawlPage(baseURL, baseURL, {});
-
-  console.log(listOfEmails);
 }
 
-main();
+main().then(() => {
+  printReport();
+});
