@@ -8,7 +8,7 @@
     "transform": {}
   },
   "scripts": {
-    "start": "node main.js",
+    "start": "node --no-warnings main.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "repository": {
